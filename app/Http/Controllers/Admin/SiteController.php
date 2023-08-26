@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateSiteRequest;
 use App\Models\Site;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SiteController extends Controller
 {
@@ -13,5 +15,48 @@ class SiteController extends Controller
         $sites = Site::get();
 
         return view('admin/sites/index', compact('sites'));
+    }
+
+    public function create()
+    {
+        return view('admin/sites/create');
+    }
+
+    public function store(StoreUpdateSiteRequest $request)
+    {
+        // $user = Auth::user();
+        $user = auth()->user();
+        $user->sites()->create($request->validated());
+
+        return redirect()
+                    ->route('sites.index')
+                    ->with('message', 'Site criado com sucesso');
+    }
+
+    public function edit(string $id)
+    {
+        if(!$site = Site::find($id)) {
+            return back();
+        }
+
+        return view('admin/sites/edit', compact('site'));
+    }
+
+    public function update(StoreUpdateSiteRequest $request, Site $site)
+    {
+        $site->update($request->validate());
+
+        return redirect()
+                    ->route('sites.index')
+                    ->with('menssage', 'Site Alterado com sucesso');
+    }
+
+    public function destroy(Site $site)
+    {
+        $site->delete();
+
+        return redirect()
+                    ->route('sites.index')
+                    ->with('menssage', 'Site Deletado com sucesso');
     }
 }
