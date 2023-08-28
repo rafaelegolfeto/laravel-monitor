@@ -2,6 +2,8 @@
 
 <a href="{{ route('sites.create') }}">Novo</a>
 
+<x-alerts/>
+
 <table>
     <thead>
         <tr>
@@ -13,7 +15,9 @@
        @foreach ($sites as $site)
             <tr>
                 <td>{{ $site->url }}</td>
-                <td>-</td>
+                <td>
+                    <a href="{{ route('sites.edit', $site->id) }}">Editar</a>
+                </td>
             </tr>
        @endforeach
     </tbody>
