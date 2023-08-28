@@ -12,7 +12,7 @@ class  SiteController extends Controller
 {
     public function index()
     {
-        $sites = Site::get();
+        $sites = Site::paginate(2);
 
         return view('admin/sites/index', compact('sites'));
     }
@@ -35,6 +35,7 @@ class  SiteController extends Controller
 
     public function edit(string $id)
     {
+        
         if(!$site = Site::find($id)) {
             return back();
         }
@@ -44,7 +45,7 @@ class  SiteController extends Controller
 
     public function update(StoreUpdateSiteRequest $request, Site $site)
     {
-        $site->update($request->validate());
+        $site->update($request->validated());
 
         return redirect()
                     ->route('sites.index')
