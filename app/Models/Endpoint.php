@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,5 +23,10 @@ class Endpoint extends Model
     public function checks() : HasMany
     {
         return $this->hasMany(Check::class);
+    }
+
+    protected function url(): string
+    {
+        return $this->site->url . $this->endpoint;
     }
 }
