@@ -1,15 +1,20 @@
 <?php
 
+use App\Http\Controllers\Admin\CheckController;
 use App\Http\Controllers\Admin\EndpointController;
 use App\Http\Controllers\Admin\SiteController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Endpoint;
 use Illuminate\Support\Facades\Route;
 
+
 Route::middleware(['auth'])
     ->prefix('admin')
     ->group(function() {
+    Route::get('/endpoints/{endpoint}/logs', [CheckController::class, 'index'])->name('endpoints.checks');
+
     Route::resource('sites/{site}/endpoints', EndpointController::class);
+
     Route::delete('/sites/{site}', [SiteController::class, 'destroy'])->name('sites.destroy');
     Route::put('/sites/{site}', [SiteController::class, 'update'])->name('sites.update');
     Route::get('/sites/{site}/edit', [SiteController::class, 'edit'])->name('sites.edit');
