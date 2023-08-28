@@ -30,9 +30,9 @@ class EndpointCheckJob implements ShouldQueue
         $url = $this->endpoint->url();
         $response = Http::get($url);
 
-        $this->endpoint->check()->create([
+        $this->endpoint->checks()->create([
             'status_code' => $response->status(),
-            'response_body' => $response->body(),
+            'response_body' => $response->successful() ? null : $response->body(),
         ]);
 
         $this->endpoint->update;([
